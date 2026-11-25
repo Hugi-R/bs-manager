@@ -3,7 +3,7 @@ import path from "node:path";
 import fs from "fs-extra";
 import { BsArm64Service, bsArm64ModsUnavailable, bsArm64Supported, findBsArm64ReleaseAsset, GithubRelease, parseBsArm64Result } from "main/services/bs-arm64.service";
 import { BSLaunchError } from "shared/models/bs-launch";
-import { BsArm64Manifest, BsArm64ModsUnavailable } from "shared/models/bs-arm64/bs-arm64.model";
+import { BsArm64Manifest, BsArm64ModsUnavailable, parseBsArm64Repository } from "shared/models/bs-arm64/bs-arm64.model";
 
 jest.mock("electron", () => ({ app: { getPath: () => "", getVersion: () => "0.0.0" } }));
 jest.mock("electron-log", () => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn(), debug: jest.fn() }));
@@ -12,6 +12,9 @@ jest.mock("main/services/installation-location.service", () => ({ InstallationLo
 jest.mock("main/services/linux.service", () => ({ LinuxService: { getInstance: jest.fn() } }));
 jest.mock("main/services/request.service", () => ({ RequestService: { getInstance: jest.fn() } }));
 jest.mock("main/services/mods/bs-mods-manager.service", () => ({ BsModsManagerService: { getInstance: jest.fn() } }));
+jest.mock("main/services/static-configuration.service", () => ({
+    StaticConfigurationService: { getInstance: jest.fn(() => ({ get: jest.fn((_key: string, def?: unknown) => def ?? ""), set: jest.fn() })) },
+}));
 
 function release(tag: string, protonTags: string[], extra: Partial<GithubRelease> = {}): GithubRelease {
     return {
@@ -91,6 +94,26 @@ describe("bs-arm64 manifest", () => {
     it("installs without mods for an untested BSIPA version", () => {
         expect(bsArm64ModsUnavailable(manifest, "4.3.8")).toBe(BsArm64ModsUnavailable.BSIPA_NOT_SUPPORTED);
         expect(bsArm64ModsUnavailable(undefined, "4.3.8")).toBe(BsArm64ModsUnavailable.BSIPA_NOT_SUPPORTED);
+    });
+});
+
+describe("parseBsArm64Repository", () => {
+    it("accepts owner/name", () => {
+        expect(parseBsArm64Repository("DaVarga/bs-arm64")).toBe("DaVarga/bs-arm64");
+        expect(parseBsArm64Repository(" Hugi-R/bs-arm64 ")).toBe("Hugi-R/bs-arm64");
+        expect(parseBsArm64Repository("some-user/BS-Manager.Fork_1")).toBe("some-user/BS-Manager.Fork_1");
+    });
+
+    it("accepts empty as unset (the default repository is used)", () => {
+        expect(parseBsArm64Repository("")).toBeUndefined();
+        expect(parseBsArm64Repository("   ")).toBeUndefined();
+    });
+
+    it("rejects anything that isn't owner/name", () => {
+        expect(parseBsArm64Repository("https://github.com/DaVarga/bs-arm64")).toBeUndefined();
+        expect(parseBsArm64Repository("DaVarga")).toBeUndefined();
+        expect(parseBsArm64Repository("DaVarga/bs-arm64/extra")).toBeUndefined();
+        expect(parseBsArm64Repository("DaVarga/bs arm64")).toBeUndefined();
     });
 });
 

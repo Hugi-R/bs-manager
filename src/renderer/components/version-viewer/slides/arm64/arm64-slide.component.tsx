@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Observable } from "rxjs";
+import { lastValueFrom, Observable } from "rxjs";
 import { BSVersion } from "shared/bs-version.interface";
-import { BS_ARM64_REPOSITORY, BsArm64Progress, BsArm64Status } from "shared/models/bs-arm64/bs-arm64.model";
+import { BsArm64InstallOptions, BsArm64Progress, BsArm64Status, BsArm64Unsupported, DEFAULT_BS_ARM64_REPOSITORY } from "shared/models/bs-arm64/bs-arm64.model";
 import { BsmButton } from "renderer/components/shared/bsm-button.component";
 import { BsmCheckbox } from "renderer/components/shared/bsm-checkbox.component";
 import { BsmLink } from "renderer/components/shared/bsm-link.component";
 import { useService } from "renderer/hooks/use-service.hook";
 import { useTranslationV2 } from "renderer/hooks/use-translation.hook";
 import { BsArm64Service } from "renderer/services/bs-arm64.service";
+import { IpcService } from "renderer/services/ipc.service";
 import { NotificationService } from "renderer/services/notification.service";
 
 type Props = {
@@ -18,10 +19,21 @@ type Props = {
 
 const MAX_LOG_LINES = 300;
 
+// A release source without the native runtime shouldn't block a local tarball install
+function allowsLocalInstall(status?: BsArm64Status): boolean {
+    if (!status) {
+        return false;
+    }
+    return status.unsupported === undefined
+        || status.unsupported === BsArm64Unsupported.NO_RELEASE
+        || status.unsupported === BsArm64Unsupported.VERSION_NOT_SUPPORTED;
+}
+
 export function Arm64Slide({ version, status, onStatusChange }: Props) {
     const { text: t } = useTranslationV2();
     const arm64 = useService(BsArm64Service);
     const notification = useService(NotificationService);
+    const ipc = useService(IpcService);
 
     const [mods, setMods] = useState(true);
     const [busy, setBusy] = useState(false);
@@ -44,10 +56,45 @@ export function Arm64Slide({ version, status, onStatusChange }: Props) {
         logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
     }, [logLines]);
 
+    const runInstall = (options: BsArm64InstallOptions, successKey: string) => {
+        setBusy(true);
+        setLogLines([]);
+        setPercent(undefined);
+
+        arm64.install(version, options).subscribe({
+            next: p => {
+                if (p.percent !== undefined) {
+                    setPercent(p.percent);
+                }
+                if (p.log) {
+                    setLogLines(lines => [...lines, p.log].slice(-MAX_LOG_LINES));
+                }
+            },
+            error: (e: { code?: string; message?: string }) => {
+                setBusy(false);
+                setLogLines(lines => [...lines, e?.message ?? String(e)]);
+                const code = e?.code?.startsWith("BS_ARM64_") ? e.code : "BS_ARM64_INSTALLER_FAILED";
+                notification.notifyError({
+                    title: `pages.version-viewer.arm64.errors.${code}`,
+                    desc: e?.message,
+                });
+                onStatusChange();
+            },
+            complete: () => {
+                setBusy(false);
+                setPercent(undefined);
+                notification.notifySuccess({ title: `pages.version-viewer.arm64.notifications.${successKey}-success` });
+                onStatusChange();
+            },
+        });
+    };
+
     const run = (action: "install" | "uninstall") => {
-        const obs: Observable<BsArm64Progress> = action === "install"
-            ? arm64.install(version, { mods })
-            : arm64.uninstall(version);
+        if (action === "install") {
+            runInstall({ mods }, "install");
+            return;
+        }
+        const obs: Observable<BsArm64Progress> = arm64.uninstall(version);
 
         setBusy(true);
         setLogLines([]);
@@ -81,7 +128,21 @@ export function Arm64Slide({ version, status, onStatusChange }: Props) {
         });
     };
 
+    const pickTarball = async () => {
+        const res = await lastValueFrom(ipc.sendV2("open-dialog", {
+            title: t("pages.version-viewer.arm64.install-tarball"),
+            properties: ["openFile"],
+            filters: [{ name: "bs-arm64", extensions: ["tar.gz", "tgz"] }],
+        }));
+        const tarballPath = res?.filePaths?.[0];
+        if (tarballPath) {
+            runInstall({ mods, tarballPath }, "install");
+        }
+    };
+
     const reinstallNeeded = status?.installed && !status.ready;
+    const repository = status?.repository ?? DEFAULT_BS_ARM64_REPOSITORY;
+    const localInstallable = allowsLocalInstall(status);
 
     return (
         <div className="w-full shrink-0 px-3 pb-3 flex flex-col items-center">
@@ -134,6 +195,16 @@ export function Arm64Slide({ version, status, onStatusChange }: Props) {
                                 text={status?.installed ? "pages.version-viewer.arm64.reinstall" : "pages.version-viewer.arm64.install"}
                                 onClick={() => run("install")}
                             />
+                            {localInstallable && (
+                                <BsmButton
+                                    className="px-4 py-1 rounded-md"
+                                    typeColor="primary"
+                                    withBar={false}
+                                    disabled={busy}
+                                    text="pages.version-viewer.arm64.install-tarball"
+                                    onClick={pickTarball}
+                                />
+                            )}
                             {status?.installed && (
                                 <BsmButton
                                     className="px-4 py-1 rounded-md"
@@ -153,8 +224,8 @@ export function Arm64Slide({ version, status, onStatusChange }: Props) {
                     </>
                 )}
 
-                <BsmLink className="text-sm underline w-fit" href={`https://github.com/${BS_ARM64_REPOSITORY}`}>
-                    github.com/{BS_ARM64_REPOSITORY}
+                <BsmLink className="text-sm underline w-fit" href={`https://github.com/${repository}`}>
+                    github.com/{repository}
                 </BsmLink>
             </div>
         </div>

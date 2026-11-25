@@ -1,9 +1,9 @@
 {
     "misc": {
-        "refresh": "\u91cd\u65b0\u6574\u7406",
-        "refresh-maps": "\u91cd\u65b0\u6574\u7406\u8b5c\u9762",
-        "refresh-playlists": "\u91cd\u65b0\u6574\u7406\u64ad\u653e\u6e05\u55ae",
-        "refresh-models": "\u91cd\u65b0\u6574\u7406\u6a21\u578b",
+        "refresh": "重新整理",
+        "refresh-maps": "重新整理譜面",
+        "refresh-playlists": "重新整理播放清單",
+        "refresh-models": "重新整理模型",
         "download": "下載",
         "add": "新增",
         "verify": "驗證",
@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "不是 bs-arm64 的 tarball"
+                },
+                "install-tarball": "從 tarball 安裝"
             },
             "launch-mods": {
                 "oculus": "Oculus 模式",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "發生錯誤，無法更改自動更新設定。"
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Native ARM64 發布來源",
+                "description": "用於下載 Native ARM64 發布的 GitHub 儲存庫 (owner/name)。留空則使用預設值：DaVarga/bs-arm64。",
+                "errors": {
+                    "title": "發布來源無效",
+                    "invalid": "請以 owner/name 格式填寫 GitHub 儲存庫，例如 DaVarga/bs-arm64。"
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR 和 Meta Horizon Link 是兩個可提供 OpenXR 執行階段的常用應用程式。"
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "未設定",
-                    "other": "其他執行階段",
-                    "unknown": "未知（偵測失敗）"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "未設定",
+                "other": "其他執行階段",
+                "unknown": "未知（偵測失敗）"
             },
             "dont-remind-me": "不再提醒",
             "launch-anyway": "仍要啟動"
@@ -1094,7 +1104,7 @@
     "maps": {
         "map-filter-panel": {
             "duration": "時長",
-            "nps" : "每秒音符數",
+            "nps": "每秒音符數",
             "njs": "音符跳躍速度",
             "tags": "標籤",
             "specificities": "general",
@@ -1175,11 +1185,11 @@
             "by": "By {songAutor}",
             "mapped-by": "mapped by",
             "delete": "刪除",
-            "preview" : "預覽地圖",
-            "bsr-code" : "BSR代碼",
-            "download" : "下載地圖",
-            "downloading" :"正在下載地圖",
-            "cancel-download" : "取消下載",
+            "preview": "預覽地圖",
+            "bsr-code": "BSR代碼",
+            "download": "下載地圖",
+            "downloading": "正在下載地圖",
+            "cancel-download": "取消下載",
             "hightlight-difficulty": "突出顯示難度"
         }
     },

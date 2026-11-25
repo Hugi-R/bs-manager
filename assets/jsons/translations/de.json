@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "Noch kein bs-arm64-Release für diese Proton-Version",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download beschädigt (Prüfsumme stimmt nicht)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64-Installation fehlgeschlagen"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64-Installation fehlgeschlagen",
+                    "BS_ARM64_NOT_A_TARBALL": "Kein bs-arm64-Tarball"
+                },
+                "install-tarball": "Release aus Tarball installieren"
             },
             "launch-mods": {
                 "oculus": "Oculus Modus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Ein Fehler ist aufgetreten, die Einstellungen für die automatische Aktualisierung können nicht geändert werden."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Quelle der Native-ARM64-Releases",
+                "description": "GitHub-Repository (owner/name), von dem Native-ARM64-Releases geladen werden. Leer lassen für die Voreinstellung: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Ungültige Release-Quelle",
+                    "invalid": "Bitte als owner/name angeben, z. B. DaVarga/bs-arm64."
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR und Meta Horizon Link sind zwei beliebte Anwendungen, die eine OpenXR-Laufzeit bereitstellen."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Nicht konfiguriert",
-                    "other": "eine andere Laufzeit",
-                    "unknown": "unbekannt (Erkennung fehlgeschlagen)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Nicht konfiguriert",
+                "other": "eine andere Laufzeit",
+                "unknown": "unbekannt (Erkennung fehlgeschlagen)"
             },
             "dont-remind-me": "Nicht mehr erinnern",
             "launch-anyway": "Trotzdem starten"

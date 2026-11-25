@@ -1,9 +1,9 @@
 {
     "misc": {
-        "refresh": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438",
-        "refresh-maps": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u043a\u0430\u0440\u0442\u0438",
-        "refresh-playlists": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u043f\u043b\u0435\u0439\u043b\u0456\u0441\u0442\u0438",
-        "refresh-models": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u043c\u043e\u0434\u0435\u043b\u0456",
+        "refresh": "Оновити",
+        "refresh-maps": "Оновити карти",
+        "refresh-playlists": "Оновити плейлісти",
+        "refresh-models": "Оновити моделі",
         "download": "Завантажити",
         "add": "Додати",
         "verify": "Перевірити",
@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "Це не tarball bs-arm64"
+                },
+                "install-tarball": "Встановити з tarball"
             },
             "launch-mods": {
                 "oculus": "Режим Oculus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Сталася помилка, неможливо змінити налаштування автоматичного оновлення."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Джерело релізів Native ARM64",
+                "description": "Репозиторій GitHub (owner/name) для завантаження релізів Native ARM64. Залишіть порожнім для типового значення: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Недійсне джерело релізів",
+                    "invalid": "Вкажіть репозиторій GitHub як owner/name, напр. DaVarga/bs-arm64."
                 }
             }
         }
@@ -1042,12 +1052,12 @@
                 "info-2": "SteamVR і Meta Horizon Link — це дві популярні програми, які надають середовище виконання OpenXR."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Не налаштовано",
-                    "other": "інший рушій",
-                    "unknown": "невідомо (помилка виявлення)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Не налаштовано",
+                "other": "інший рушій",
+                "unknown": "невідомо (помилка виявлення)"
             },
             "dont-remind-me": "Більше не нагадувати",
             "launch-anyway": "Запустити все одно"

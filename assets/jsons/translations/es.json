@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "No es un tarball de bs-arm64"
+                },
+                "install-tarball": "Instalar desde un tarball"
             },
             "launch-mods": {
                 "oculus": "Modo Oculus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Ocurrió un error, no se pudo cambiar la configuración de actualización automática."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Fuente de las versiones nativas ARM64",
+                "description": "Repositorio de GitHub (owner/name) del que descargar las versiones nativas ARM64. Déjalo vacío para usar el predeterminado: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Fuente no válida",
+                    "invalid": "Indica el repositorio como owner/name, p. ej. DaVarga/bs-arm64."
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR y Meta Horizon Link son dos aplicaciones populares que proporcionan un runtime OpenXR que puedes usar."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "No configurado",
-                    "other": "otro runtime",
-                    "unknown": "desconocido (falló la detección)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "No configurado",
+                "other": "otro runtime",
+                "unknown": "desconocido (falló la detección)"
             },
             "dont-remind-me": "No volver a avisarme",
             "launch-anyway": "Iniciar de todos modos"

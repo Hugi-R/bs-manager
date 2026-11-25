@@ -1,9 +1,9 @@
 {
     "misc": {
-        "refresh": "\u5237\u65b0",
-        "refresh-maps": "\u5237\u65b0\u8c31\u9762",
-        "refresh-playlists": "\u5237\u65b0\u64ad\u653e\u5217\u8868",
-        "refresh-models": "\u5237\u65b0\u6a21\u578b",
+        "refresh": "刷新",
+        "refresh-maps": "刷新谱面",
+        "refresh-playlists": "刷新播放列表",
+        "refresh-models": "刷新模型",
         "download": "下载",
         "add": "添加",
         "verify": "验证",
@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "不是 bs-arm64 的 tarball"
+                },
+                "install-tarball": "从 tarball 安装"
             },
             "launch-mods": {
                 "oculus": "Oculus 模式",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "发生错误，无法更改自动更新设置。"
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Native ARM64 发布源",
+                "description": "用于下载 Native ARM64 发布的 GitHub 仓库 (owner/name)。留空使用默认值：DaVarga/bs-arm64。",
+                "errors": {
+                    "title": "发布源无效",
+                    "invalid": "请以 owner/name 形式填写 GitHub 仓库，例如 DaVarga/bs-arm64。"
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR 和 Meta Horizon Link 是两个可提供 OpenXR 运行时的常用应用。"
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "未设置",
-                    "other": "其他运行时",
-                    "unknown": "未知（检测失败）"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "未设置",
+                "other": "其他运行时",
+                "unknown": "未知（检测失败）"
             },
             "dont-remind-me": "不再提醒",
             "launch-anyway": "仍要启动"

@@ -1,13 +1,24 @@
 /**
  * Native ARM64 build of Beat Saber for ARM64 Proton (e.g. the Steam Frame).
- * The runtime itself lives in https://github.com/DaVarga/bs-arm64; BSManager
- * downloads its release matching the selected Proton build and runs its installer.
+ * The runtime releases are downloaded from the GitHub repository configured in the
+ * `bs-arm64-repository` setting (DEFAULT_BS_ARM64_REPOSITORY by default); BSManager
+ * picks the release matching the selected Proton build and runs its installer.
  */
 
-export const BS_ARM64_REPOSITORY = "DaVarga/bs-arm64";
+/** Where bs-arm64 releases are downloaded from when the `bs-arm64-repository` setting is empty. */
+export const DEFAULT_BS_ARM64_REPOSITORY = "DaVarga/bs-arm64";
 
 // bs-arm64-manifest.json of a release (0.3.2 and later): what the release was tested with
 export const BS_ARM64_MANIFEST_ASSET = "bs-arm64-manifest.json";
+
+// A release source: GitHub "owner/repo". Names/owners are case-insensitive but kept as typed.
+export function parseBsArm64Repository(value: string): string | undefined {
+    if (!value) {
+        return undefined;
+    }
+    const match = value.trim().match(/^([\w.-]+)\/([\w.-]+)$/);
+    return match ? `${match[1]}/${match[2]}` : undefined;
+}
 
 export interface BsArm64ProtonVersion {
     // Release asset to install for this Proton version, e.g. "bs-arm64-v0.3.2-proton-11.0-2c.tar.gz"
@@ -55,6 +66,8 @@ export interface BsArm64Status {
     modsUnavailable?: BsArm64ModsUnavailable;
     // Installed BSIPA, else the one BeatMods offers for this version
     bsipaVersion?: string;
+    // The release source actually in use (resolved from the bs-arm64-repository setting), e.g. "DaVarga/bs-arm64"
+    repository?: string;
     installed: boolean;
     // Installed with mod support (ARM64 BSIPA fixes)
     mods: boolean;
@@ -69,6 +82,9 @@ export interface BsArm64Status {
 
 export interface BsArm64InstallOptions {
     mods: boolean;
+    // Install from a local bs-arm64-*.tar.gz instead of downloading the newest GitHub release.
+    // The tarball's own installer still checks its supported Proton versions.
+    tarballPath?: string;
 }
 
 export interface BsArm64Progress {
@@ -80,6 +96,7 @@ export interface BsArm64Progress {
 
 export enum BsArm64Error {
     NO_MATCHING_RELEASE = "BS_ARM64_NO_MATCHING_RELEASE",
+    NOT_A_TARBALL = "BS_ARM64_NOT_A_TARBALL",
     CHECKSUM_MISMATCH = "BS_ARM64_CHECKSUM_MISMATCH",
     INSTALLER_FAILED = "BS_ARM64_INSTALLER_FAILED",
 }

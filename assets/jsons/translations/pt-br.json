@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "Não é um tarball do bs-arm64"
+                },
+                "install-tarball": "Instalar de um tarball"
             },
             "launch-mods": {
                 "oculus": "Modo Oculus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Ocorreu um erro, não foi possível alterar as configurações de atualização automática."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Fonte das versões nativas ARM64",
+                "description": "Repositório do GitHub (owner/name) de onde baixar as versões nativas ARM64. Deixe vazio para o padrão: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Fonte inválida",
+                    "invalid": "Informe o repositório como owner/name, ex.: DaVarga/bs-arm64."
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR e Meta Horizon Link são dois aplicativos populares que fornecem um runtime OpenXR que você pode usar."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Não configurado",
-                    "other": "outro runtime",
-                    "unknown": "desconhecido (falha na detecção)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Não configurado",
+                "other": "outro runtime",
+                "unknown": "desconhecido (falha na detecção)"
             },
             "dont-remind-me": "Não avisar novamente",
             "launch-anyway": "Iniciar mesmo assim"

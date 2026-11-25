@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "Ce fichier n'est pas un tarball bs-arm64"
+                },
+                "install-tarball": "Installer depuis une archive tarball"
             },
             "launch-mods": {
                 "oculus": "Mode Oculus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Une erreur est survenue, impossible de modifier les paramètres de mise à jour automatique."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Source des versions natives ARM64",
+                "description": "Dépôt GitHub (owner/name) depuis lequel télécharger les versions natives ARM64. Laisser vide pour la valeur par défaut : DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Source invalide",
+                    "invalid": "Indiquez le dépôt GitHub sous la forme owner/name, ex. DaVarga/bs-arm64."
                 }
             }
         }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR et Meta Horizon Link sont deux applications populaires qui fournissent un runtime OpenXR que tu peux utiliser."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Non configuré",
-                    "other": "un autre runtime",
-                    "unknown": "inconnu (échec de la détection)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Non configuré",
+                "other": "un autre runtime",
+                "unknown": "inconnu (échec de la détection)"
             },
             "dont-remind-me": "Ne plus me le rappeler",
             "launch-anyway": "Lancer quand même"

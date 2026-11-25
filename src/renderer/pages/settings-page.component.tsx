@@ -52,6 +52,8 @@ import { DISCORD_URL } from "shared/constants";
 import { AutoUpdate } from "shared/models/config";
 import { isCloseOnLaunchSupported } from "renderer/helpers/close-on-launch-setting.helper";
 import { SettingFolderInput } from "renderer/components/settings/setting-folder-input.component";
+import { SettingTextInput } from "renderer/components/settings/setting-text-input.component";
+import { DEFAULT_BS_ARM64_REPOSITORY, parseBsArm64Repository } from "shared/models/bs-arm64/bs-arm64.model";
 
 export function SettingsPage() {
 
@@ -101,6 +103,8 @@ export function SettingsPage() {
     const [installationFolderInput, setInstallationFolderInput] = useState("");
     const [protonFolder, setProtonFolder] = useState("");
     const [protonFolderInput, setProtonFolderInput] = useState("");
+    const [bsArm64Repo, setBsArm64Repo] = useState(DEFAULT_BS_ARM64_REPOSITORY);
+    const [bsArm64RepoInput, setBsArm64RepoInput] = useState("");
     const [showSupporters, setShowSupporters] = useState(false);
     const [mapDeepLinksEnabled, setMapDeepLinksEnabled] = useState(false);
     const [playlistsDeepLinkEnabled, setPlaylistsDeepLinkEnabled] = useState(false);
@@ -119,6 +123,12 @@ export function SettingsPage() {
         staticConfig.get("proton-folder").then((folder = "") => {
             setProtonFolder(folder);
             setProtonFolderInput(folder);
+        });
+
+        staticConfig.get("bs-arm64-repository").then((repo = "") => {
+            const resolved = parseBsArm64Repository(repo) ?? DEFAULT_BS_ARM64_REPOSITORY;
+            setBsArm64Repo(resolved);
+            setBsArm64RepoInput(resolved);
         });
 
     }, []);
@@ -225,6 +235,20 @@ export function SettingsPage() {
                 desc: "misc.unknown",
             });
         }
+    };
+
+    const saveBsArm64Repository = async (value: string) => {
+        const repo = parseBsArm64Repository(value);
+        if (repo === undefined && value.trim() !== "") {
+            notificationService.notifyError({
+                title: "pages.settings.bs-arm64-repository.errors.title",
+                desc: "pages.settings.bs-arm64-repository.errors.invalid",
+            });
+            return;
+        }
+        await staticConfig.set("bs-arm64-repository", repo ?? "");
+        setBsArm64Repo(repo ?? DEFAULT_BS_ARM64_REPOSITORY);
+        setBsArm64RepoInput(repo ?? DEFAULT_BS_ARM64_REPOSITORY);
     };
 
     const moveInstallationFolder = (newInstallationPath: string) => {
@@ -421,6 +445,10 @@ export function SettingsPage() {
 
                 <SettingContainer os="linux" title="pages.settings.proton-folder.title" description="pages.settings.proton-folder.description">
                     <SettingFolderInput value={protonFolderInput} label={t("pages.settings.proton-folder.title")} canApply={!!protonFolderInput.trim() && protonFolderInput !== protonFolder} onChange={setProtonFolderInput} onApply={() => saveProtonFolder(protonFolderInput)} onChoose={setDefaultProtonFolder} />
+                </SettingContainer>
+
+                <SettingContainer os="linux" title="pages.settings.bs-arm64-repository.title" description="pages.settings.bs-arm64-repository.description">
+                    <SettingTextInput value={bsArm64RepoInput} placeholder={DEFAULT_BS_ARM64_REPOSITORY} label={t("pages.settings.bs-arm64-repository.title")} canApply={bsArm64RepoInput.trim() !== bsArm64Repo} onChange={setBsArm64RepoInput} onApply={() => saveBsArm64Repository(bsArm64RepoInput)} />
                 </SettingContainer>
 
                 <SettingContainer title="pages.settings.additional-content.title" description="pages.settings.additional-content.description">

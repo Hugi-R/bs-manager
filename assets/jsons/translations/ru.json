@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "Это не tarball bs-arm64"
+                },
+                "install-tarball": "Установить из tarball"
             },
             "launch-mods": {
                 "oculus": "Режим Oculus",
@@ -404,6 +406,14 @@
                     "error-notification": {
                         "message": "Произошла ошибка, не удалось изменить настройки автообновления."
                     }
+                }
+            },
+            "bs-arm64-repository": {
+                "title": "Источник сборок Native ARM64",
+                "description": "Репозиторий GitHub (owner/name) для загрузки сборок Native ARM64. Оставьте пустым для значения по умолчанию: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Недопустимый источник сборок",
+                    "invalid": "Укажите репозиторий GitHub как owner/name, например DaVarga/bs-arm64."
                 }
             }
         }
@@ -1046,12 +1056,12 @@
                 "info-2": "SteamVR и Meta Horizon Link — два популярных приложения, предоставляющих среду выполнения OpenXR."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Не настроено",
-                    "other": "другая среда выполнения",
-                    "unknown": "неизвестна (ошибка обнаружения)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Не настроено",
+                "other": "другая среда выполнения",
+                "unknown": "неизвестна (ошибка обнаружения)"
             },
             "dont-remind-me": "Больше не напоминать",
             "launch-anyway": "Запустить всё равно"

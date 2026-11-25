@@ -87,8 +87,10 @@
                 "errors": {
                     "BS_ARM64_NO_MATCHING_RELEASE": "No bs-arm64 release for this Proton version yet",
                     "BS_ARM64_CHECKSUM_MISMATCH": "Download corrupted (checksum mismatch)",
-                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed"
-                }
+                    "BS_ARM64_INSTALLER_FAILED": "Native ARM64 install failed",
+                    "BS_ARM64_NOT_A_TARBALL": "Not a bs-arm64 tarball"
+                },
+                "install-tarball": "Install from tarball"
             },
             "launch-mods": {
                 "oculus": "Oculus Mode",
@@ -205,7 +207,7 @@
                             "unselect-all": "Unselect all"
                         }
                     },
-                    "mod-item":{
+                    "mod-item": {
                         "this-is-a-large-mod": "This is a large mod!",
                         "this-is-a-very-large-mod": "This is a very large mod!"
                     }
@@ -405,6 +407,14 @@
                         "message": "An error occurred, unable to change auto update settings."
                     }
                 }
+            },
+            "bs-arm64-repository": {
+                "title": "Native ARM64 release source",
+                "description": "GitHub repository (owner/name) to download native ARM64 releases from. Leave empty for the default: DaVarga/bs-arm64.",
+                "errors": {
+                    "title": "Invalid release source",
+                    "invalid": "Use the GitHub repository as owner/name, e.g. DaVarga/bs-arm64."
+                }
             }
         }
     },
@@ -494,7 +504,7 @@
                         "NO_META_AUTH_TOKEN": "Unable to retrieve the Meta login token required for download.",
                         "UNKNOWN_ERROR": "An unknown error occurred."
                     },
-                    "actions":{
+                    "actions": {
                         "claim-your-desktop-version": "Claim your desktop version"
                     }
                 }
@@ -1047,12 +1057,12 @@
                 "info-2": "SteamVR and Meta Horizon Link are two popular apps that provide an OpenXR runtime you can use."
             },
             "runtimes": {
-                    "steam": "SteamVR",
-                    "oculus": "Meta Quest Link",
-                    "vdxr": "Virtual Desktop (VDXR)",
-                    "not-set": "Not set",
-                    "other": "another runtime",
-                    "unknown": "unknown (detection failed)"
+                "steam": "SteamVR",
+                "oculus": "Meta Quest Link",
+                "vdxr": "Virtual Desktop (VDXR)",
+                "not-set": "Not set",
+                "other": "another runtime",
+                "unknown": "unknown (detection failed)"
             },
             "dont-remind-me": "Don't remind me again",
             "launch-anyway": "Launch anyway"

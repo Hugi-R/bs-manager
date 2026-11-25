@@ -8,7 +8,7 @@ import { BSVersion } from "shared/bs-version.interface";
 import {
     BS_ARM64_FALLBACK_MANIFEST,
     BS_ARM64_MANIFEST_ASSET,
-    BS_ARM64_REPOSITORY,
+    DEFAULT_BS_ARM64_REPOSITORY,
     BsArm64Error,
     BsArm64Manifest,
     BsArm64ModsUnavailable,
@@ -16,6 +16,7 @@ import {
     BsArm64Progress,
     BsArm64Status,
     BsArm64Unsupported,
+    parseBsArm64Repository,
 } from "shared/models/bs-arm64/bs-arm64.model";
 import { CustomError } from "shared/models/exceptions/custom-error.class";
 import { BSLaunchError } from "shared/models/bs-launch";
@@ -26,6 +27,7 @@ import { BSLocalVersionService } from "./bs-local-version.service";
 import { InstallationLocationService } from "./installation-location.service";
 import { LinuxService } from "./linux.service";
 import { RequestService } from "./request.service";
+import { StaticConfigurationService } from "./static-configuration.service";
 import { BsModsManagerService } from "./mods/bs-mods-manager.service";
 
 // Written by BSManager into the installer's state dir in the instance: which release (and where
@@ -67,7 +69,7 @@ type InstalledRelease = { tag: string; dir: string };
 type ReleaseAsset = { release: GithubRelease; asset: GithubRelease["assets"][number] };
 
 // The newest release's manifest and its asset for a Proton build
-type ReleaseInfo = { protonBuild: string | undefined; match?: ReleaseAsset; manifest: BsArm64Manifest };
+type ReleaseInfo = { protonBuild: string | undefined; repository: string; match?: ReleaseAsset; manifest: BsArm64Manifest };
 
 // GitHub allows 60 unauthenticated API requests an hour; the status is asked for on every version view
 const RELEASE_INFO_TTL_MS = 10 * 60 * 1000;
@@ -101,9 +103,11 @@ export function bsArm64ModsUnavailable(manifest: BsArm64Manifest | undefined, bs
 }
 
 /**
- * Installs the native ARM64 runtime from https://github.com/DaVarga/bs-arm64 into a
+ * Installs the native ARM64 runtime from the release repository configured in the
+ * `bs-arm64-repository` setting (default https://github.com/DaVarga/bs-arm64) into a
  * Beat Saber instance. The release matching the selected Proton build is downloaded,
  * verified and unpacked into BSManager's cache, and its bs-arm64.sh does the rest.
+ * A local tarball can be installed instead via BsArm64InstallOptions.tarballPath.
  */
 export class BsArm64Service {
     private static instance: BsArm64Service;
@@ -119,6 +123,7 @@ export class BsArm64Service {
     private readonly localVersions = BSLocalVersionService.getInstance();
     private readonly installLocation = InstallationLocationService.getInstance();
     private readonly request = RequestService.getInstance();
+    private readonly staticConfig = StaticConfigurationService.getInstance();
 
     private releaseInfo?: { info: ReleaseInfo; time: number };
 
@@ -128,6 +133,7 @@ export class BsArm64Service {
         const versionPath = await this.localVersions.getVersionPath(version);
         const release = await this.readInstalledRelease(versionPath);
         const script = release && await this.scriptStatus(versionPath, release);
+        const repository = this.repository();
         const status: BsArm64Status = {
             // Installed by a release without `status` (0.3.x and older): only a reinstall helps
             installed: script ? script.installed : !!release,
@@ -135,6 +141,7 @@ export class BsArm64Service {
             ready: !!script?.ready,
             protonVersion: this.linux.getProtonBuild(),
             installedRelease: release?.tag,
+            repository,
         };
 
         if (process.platform !== "linux" || process.arch !== "arm64") {
@@ -171,7 +178,9 @@ export class BsArm64Service {
         return new Observable<BsArm64Progress>(obs => {
             (async () => {
                 const versionPath = await this.localVersions.getVersionPath(version);
-                const release = await this.prepareRelease(msg => obs.next(msg));
+                const release = options.tarballPath
+                    ? await this.prepareLocalTarball(options.tarballPath, msg => obs.next(msg))
+                    : await this.prepareRelease(msg => obs.next(msg));
                 const args = ["install", this.quote(versionPath), ...this.prefixArgs()];
                 if (!options.mods) {
                     args.push("--no-mods");
@@ -233,17 +242,31 @@ export class BsArm64Service {
         return path.join(this.installLocation.cachePath(), "bs-arm64");
     }
 
+    /** The release source from the `bs-arm64-repository` setting; the upstream repository by default. */
+    private repository(): string {
+        const configured = this.staticConfig.get("bs-arm64-repository", "");
+        const parsed = parseBsArm64Repository(configured);
+        if (!parsed) {
+            if (configured) {
+                log.warn(`Ignoring invalid bs-arm64-repository '${configured}', using ${DEFAULT_BS_ARM64_REPOSITORY}`);
+            }
+            return DEFAULT_BS_ARM64_REPOSITORY;
+        }
+        return parsed;
+    }
+
     /** The newest release, its asset for the selected Proton build, and its manifest. Cached for a while. */
     private async getReleaseInfo(): Promise<ReleaseInfo> {
         const protonBuild = this.linux.getProtonBuild();
+        const repository = this.repository();
         const cached = this.releaseInfo;
-        if (cached && cached.info.protonBuild === protonBuild && Date.now() - cached.time < RELEASE_INFO_TTL_MS) {
+        if (cached && cached.info.repository === repository && cached.info.protonBuild === protonBuild && Date.now() - cached.time < RELEASE_INFO_TTL_MS) {
             return cached.info;
         }
 
         // Only the newest release: its manifest lists every supported Proton version
         const { data: release } = await this.request.getJSON<GithubRelease>(
-            `https://api.github.com/repos/${BS_ARM64_REPOSITORY}/releases/latest`
+            `https://api.github.com/repos/${repository}/releases/latest`
         );
         const manifestAsset = release.assets.find(asset => asset.name === BS_ARM64_MANIFEST_ASSET);
         if (!manifestAsset) {
@@ -251,7 +274,7 @@ export class BsArm64Service {
         }
         const manifest = await this.downloadManifest(manifestAsset.browser_download_url);
         const match = findBsArm64ReleaseAsset(release, manifest, protonBuild);
-        const info: ReleaseInfo = { protonBuild, match, manifest };
+        const info: ReleaseInfo = { protonBuild, repository, match, manifest };
 
         this.releaseInfo = { info, time: Date.now() };
         return info;
@@ -311,6 +334,47 @@ export class BsArm64Service {
         await this.run(`tar -xzf ${this.quote(tarball)} -C ${this.quote(this.releasesDir())}`, progress);
         await fs.remove(tarball);
         return { tag: release.tag_name, dir };
+    }
+
+    /** Install a local bs-arm64-*.tar.gz: unpacked like a downloaded release, side by side in the cache. */
+    private async prepareLocalTarball(tarballPath: string, progress: (p: BsArm64Progress) => void): Promise<InstalledRelease> {
+        this.releaseInfo = undefined;
+        if (!/\.tar\.gz$/.test(tarballPath)) {
+            throw new CustomError(`Not a tarball: '${path.basename(tarballPath)}'`, BsArm64Error.NOT_A_TARBALL, path.basename(tarballPath));
+        }
+        if (!(await fs.pathExists(tarballPath))) {
+            throw new CustomError(`No such file: ${tarballPath}`, BsArm64Error.NOT_A_TARBALL, tarballPath);
+        }
+
+        // A sibling "<tarball>.sha256" is verified when present
+        if (await fs.pathExists(`${tarballPath}.sha256`)) {
+            const expected = (await fs.readFile(`${tarballPath}.sha256`, "utf8")).trim().split(/\s+/)[0];
+            const actual = await this.sha256(tarballPath);
+            if (expected !== actual) {
+                throw new CustomError(`Checksum mismatch for ${path.basename(tarballPath)}`, BsArm64Error.CHECKSUM_MISMATCH);
+            }
+            progress({ log: "Checksum OK" });
+        }
+
+        await fs.ensureDir(this.releasesDir());
+        const listing: string[] = [];
+        await this.run(`tar -tzf ${this.quote(tarballPath)}`, l => l.log && listing.push(l.log));
+        const scriptEntry = listing.find(l => l.split("/").findLast(p => p) === "bs-arm64.sh");
+        const name = scriptEntry?.split("/").find(p => p && p !== "." && p !== "bs-arm64.sh");
+        if (!name) {
+            // bs-arm64 release tarballs always unpack into one top-level folder next to their installer
+            throw new CustomError(`Not a bs-arm64 tarball: '${path.basename(tarballPath)}'`, BsArm64Error.NOT_A_TARBALL, path.basename(tarballPath));
+        }
+        const dir = path.join(this.releasesDir(), name);
+        progress({ log: `Unpacking into ${this.releasesDir()}` });
+        await this.run(`tar -xzf ${this.quote(tarballPath)} -C ${this.quote(this.releasesDir())}`, progress);
+        if (!(await fs.pathExists(path.join(dir, "bs-arm64.sh")))) {
+            throw new CustomError(`Unpacking ${path.basename(tarballPath)} failed`, BsArm64Error.INSTALLER_FAILED);
+        }
+        // The release's own VERSION if it has one, else the folder name
+        const tag = (await fs.readFile(path.join(dir, "VERSION"), "utf8").catch((): string => "")).trim() || name;
+        progress({ log: `Using ${name}` });
+        return { tag, dir };
     }
 
     // "<sha256>  <file name>"
