@@ -72,7 +72,7 @@ export interface StaticConfigKeyValues {
 
     // Linux Specific static configs
     "proton-folder": string;
-    // GitHub "owner/repo" of a bs-arm64 release source; empty = the default (DaVarga/bs-arm64)
+    // GitHub "owner/repo" of a bs-arm64 release source; empty = the default (Hugi-R/bs-arm64)
     "bs-arm64-repository": string;
     "versions": BSVersion[];
 };

@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Native ARM64 發布來源",
-                "description": "用於下載 Native ARM64 發布的 GitHub 儲存庫 (owner/name)。留空則使用預設值：DaVarga/bs-arm64。",
+                "description": "用於下載 Native ARM64 發布的 GitHub 儲存庫 (owner/name)。留空則使用預設值：Hugi-R/bs-arm64。",
                 "errors": {
                     "title": "發布來源無效",
-                    "invalid": "請以 owner/name 格式填寫 GitHub 儲存庫，例如 DaVarga/bs-arm64。"
+                    "invalid": "請以 owner/name 格式填寫 GitHub 儲存庫，例如 Hugi-R/bs-arm64。"
                 }
             }
         }

@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Quelle der Native-ARM64-Releases",
-                "description": "GitHub-Repository (owner/name), von dem Native-ARM64-Releases geladen werden. Leer lassen für die Voreinstellung: DaVarga/bs-arm64.",
+                "description": "GitHub-Repository (owner/name), von dem Native-ARM64-Releases geladen werden. Leer lassen für die Voreinstellung: Hugi-R/bs-arm64.",
                 "errors": {
                     "title": "Ungültige Release-Quelle",
-                    "invalid": "Bitte als owner/name angeben, z. B. DaVarga/bs-arm64."
+                    "invalid": "Bitte als owner/name angeben, z. B. Hugi-R/bs-arm64."
                 }
             }
         }

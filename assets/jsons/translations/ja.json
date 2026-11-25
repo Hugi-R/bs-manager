@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Native ARM64 リリースの取得元",
-                "description": "Native ARM64 リリースをダウンロードする GitHub リポジトリ (owner/name)。空欄でデフォルト (DaVarga/bs-arm64) を使用します。",
+                "description": "Native ARM64 リリースをダウンロードする GitHub リポジトリ (owner/name)。空欄でデフォルト (Hugi-R/bs-arm64) を使用します。",
                 "errors": {
                     "title": "リリースソースが無効です",
-                    "invalid": "GitHub リポジトリを owner/name 形式で指定してください (例: DaVarga/bs-arm64)。"
+                    "invalid": "GitHub リポジトリを owner/name 形式で指定してください (例: Hugi-R/bs-arm64)。"
                 }
             }
         }

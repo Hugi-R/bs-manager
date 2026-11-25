@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Pinagkukunan ng mga Native ARM64 release",
-                "description": "GitHub repository (owner/name) kung saan kukunin ang mga Native ARM64 release. Iwanang blangko para sa default: DaVarga/bs-arm64.",
+                "description": "GitHub repository (owner/name) kung saan kukunin ang mga Native ARM64 release. Iwanang blangko para sa default: Hugi-R/bs-arm64.",
                 "errors": {
                     "title": "Di-wastong pinagmulan",
-                    "invalid": "Ilagay ang GitHub repository bilang owner/name, hal. DaVarga/bs-arm64."
+                    "invalid": "Ilagay ang GitHub repository bilang owner/name, hal. Hugi-R/bs-arm64."
                 }
             }
         }

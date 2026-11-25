@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Native ARM64 发布源",
-                "description": "用于下载 Native ARM64 发布的 GitHub 仓库 (owner/name)。留空使用默认值：DaVarga/bs-arm64。",
+                "description": "用于下载 Native ARM64 发布的 GitHub 仓库 (owner/name)。留空使用默认值：Hugi-R/bs-arm64。",
                 "errors": {
                     "title": "发布源无效",
-                    "invalid": "请以 owner/name 形式填写 GitHub 仓库，例如 DaVarga/bs-arm64。"
+                    "invalid": "请以 owner/name 形式填写 GitHub 仓库，例如 Hugi-R/bs-arm64。"
                 }
             }
         }

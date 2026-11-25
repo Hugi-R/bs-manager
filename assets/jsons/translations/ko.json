@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "네이티브 ARM64 릴리스 소스",
-                "description": "네이티브 ARM64 릴리스를 다운로드할 GitHub 저장소(owner/name)입니다. 비워 두면 기본값(DaVarga/bs-arm64)을 사용합니다.",
+                "description": "네이티브 ARM64 릴리스를 다운로드할 GitHub 저장소(owner/name)입니다. 비워 두면 기본값(Hugi-R/bs-arm64)을 사용합니다.",
                 "errors": {
                     "title": "잘못된 릴리스 소스",
-                    "invalid": "GitHub 저장소를 owner/name 형식으로 지정하세요(예: DaVarga/bs-arm64)."
+                    "invalid": "GitHub 저장소를 owner/name 형식으로 지정하세요(예: Hugi-R/bs-arm64)."
                 }
             }
         }

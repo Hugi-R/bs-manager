@@ -5,8 +5,9 @@
  * picks the release matching the selected Proton build and runs its installer.
  */
 
-/** Where bs-arm64 releases are downloaded from when the `bs-arm64-repository` setting is empty. */
-export const DEFAULT_BS_ARM64_REPOSITORY = "DaVarga/bs-arm64";
+/** Where bs-arm64 releases are downloaded from when the `bs-arm64-repository` setting is empty.
+ *  Upstream is DaVarga/bs-arm64; this fork ships Hugi-R/bs-arm64 as the default. */
+export const DEFAULT_BS_ARM64_REPOSITORY = "Hugi-R/bs-arm64";
 
 // bs-arm64-manifest.json of a release (0.3.2 and later): what the release was tested with
 export const BS_ARM64_MANIFEST_ASSET = "bs-arm64-manifest.json";
@@ -66,7 +67,7 @@ export interface BsArm64Status {
     modsUnavailable?: BsArm64ModsUnavailable;
     // Installed BSIPA, else the one BeatMods offers for this version
     bsipaVersion?: string;
-    // The release source actually in use (resolved from the bs-arm64-repository setting), e.g. "DaVarga/bs-arm64"
+    // The release source actually in use (resolved from the bs-arm64-repository setting), e.g. "Hugi-R/bs-arm64"
     repository?: string;
     installed: boolean;
     // Installed with mod support (ARM64 BSIPA fixes)

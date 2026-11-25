@@ -104,7 +104,7 @@ export function bsArm64ModsUnavailable(manifest: BsArm64Manifest | undefined, bs
 
 /**
  * Installs the native ARM64 runtime from the release repository configured in the
- * `bs-arm64-repository` setting (default https://github.com/DaVarga/bs-arm64) into a
+ * `bs-arm64-repository` setting (default https://github.com/Hugi-R/bs-arm64) into a
  * Beat Saber instance. The release matching the selected Proton build is downloaded,
  * verified and unpacked into BSManager's cache, and its bs-arm64.sh does the rest.
  * A local tarball can be installed instead via BsArm64InstallOptions.tarballPath.

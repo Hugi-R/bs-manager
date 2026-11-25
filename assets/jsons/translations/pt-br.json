@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Fonte das versões nativas ARM64",
-                "description": "Repositório do GitHub (owner/name) de onde baixar as versões nativas ARM64. Deixe vazio para o padrão: DaVarga/bs-arm64.",
+                "description": "Repositório do GitHub (owner/name) de onde baixar as versões nativas ARM64. Deixe vazio para o padrão: Hugi-R/bs-arm64.",
                 "errors": {
                     "title": "Fonte inválida",
-                    "invalid": "Informe o repositório como owner/name, ex.: DaVarga/bs-arm64."
+                    "invalid": "Informe o repositório como owner/name, ex.: Hugi-R/bs-arm64."
                 }
             }
         }

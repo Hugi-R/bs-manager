@@ -51,7 +51,8 @@ jobs:
                       args+=("-c.extraMetadata.version=${GITHUB_REF_NAME#v}")
                   fi
                   pnpm exec electron-builder "${args[@]}"
-                  cp scripts/install-steam-frame.sh release/build/install.sh
+                  # The released install.sh defaults to the repository it was released on
+                  sed -e "s|^REPO=.*|REPO=${{ github.repository }}|" scripts/install-steam-frame.sh > release/build/install.sh
                   (cd release/build && sha256sum *.AppImage install.sh > SHA256SUMS)
 
             - uses: actions/upload-artifact@v4

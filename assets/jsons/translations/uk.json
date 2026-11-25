@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Джерело релізів Native ARM64",
-                "description": "Репозиторій GitHub (owner/name) для завантаження релізів Native ARM64. Залишіть порожнім для типового значення: DaVarga/bs-arm64.",
+                "description": "Репозиторій GitHub (owner/name) для завантаження релізів Native ARM64. Залишіть порожнім для типового значення: Hugi-R/bs-arm64.",
                 "errors": {
                     "title": "Недійсне джерело релізів",
-                    "invalid": "Вкажіть репозиторій GitHub як owner/name, напр. DaVarga/bs-arm64."
+                    "invalid": "Вкажіть репозиторій GitHub як owner/name, напр. Hugi-R/bs-arm64."
                 }
             }
         }

@@ -410,10 +410,10 @@
             },
             "bs-arm64-repository": {
                 "title": "Источник сборок Native ARM64",
-                "description": "Репозиторий GitHub (owner/name) для загрузки сборок Native ARM64. Оставьте пустым для значения по умолчанию: DaVarga/bs-arm64.",
+                "description": "Репозиторий GitHub (owner/name) для загрузки сборок Native ARM64. Оставьте пустым для значения по умолчанию: Hugi-R/bs-arm64.",
                 "errors": {
                     "title": "Недопустимый источник сборок",
-                    "invalid": "Укажите репозиторий GitHub как owner/name, например DaVarga/bs-arm64."
+                    "invalid": "Укажите репозиторий GitHub как owner/name, например Hugi-R/bs-arm64."
                 }
             }
         }
